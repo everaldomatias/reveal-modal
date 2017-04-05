@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: brasadesign,matheusgimenez
+Contributors: brasadesign,matheusgimenez,everaldomatias
 Donate link: http://codeispoetry.info/donate
 Tags: ajax, modal, responsive
 Requires at least: 4.4
@@ -40,3 +40,6 @@ First functional version
 
 = 1.1.0 =
 Fix inload open
+
+= 1.1.1 =
+Fix support child theme

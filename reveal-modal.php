@@ -12,7 +12,7 @@
  * Plugin Name:       Reveal Modal WP
  * Plugin URI:        http://brasa.art.br
  * Description:       Reveal Modal WP
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Matheus Gimenez
  * Plugin URI:        http://brasa.art.br
  * Text Domain:       reveal-modal
@@ -119,6 +119,14 @@ class Reveal_Modal_Plugin {
 		echo '<div id="reveal-modal-id" class="reveal-modal" data-reveal>';
 		if ( ! is_404() && is_single() ) {
 			global $wp_query;
+
+			// Get correct path based in child theme or not
+			if ( is_child_theme() ) {
+				$template = get_stylesheet_directory();
+			} else {
+				$template = get_template_directory();
+			}
+
 			$_post = get_post( $wp_query->post->ID );
 			if ( $_post && strpos( $_post->post_name, $this->option_string ) !== false ) {
 				$_post_name = str_replace( $this->option_string, '', $_post->post_name );
@@ -132,14 +140,14 @@ class Reveal_Modal_Plugin {
 				if ( ! empty( $prev_post ) ) {
 					echo '<a class="prev-post-reveal-nav" data-open-ajax="true" href="' . get_permalink( $prev_post->ID ) . '">&#60;</a>';
 				}
-				if ( file_exists( get_template_directory() . '/reveal-' . $_post_name . '.php' ) ) {
-					include get_template_directory() . '/reveal-' . $_post_name . '.php';
+				if ( file_exists( $template . '/reveal-' . $_post_name . '.php' ) ) {
+					include $template . '/reveal-' . $_post_name . '.php';
 					//echo '<a class="close-reveal-modal">&#215;</a>';
-				} elseif ( file_exists( get_template_directory() . '/reveal-' . $_post->post_name . '.php' ) ) {
-					include get_template_directory() . '/reveal-' . $_post->post_name . '.php';
+				} elseif ( file_exists( $template . '/reveal-' . $_post->post_name . '.php' ) ) {
+					include $template . '/reveal-' . $_post->post_name . '.php';
 					//echo '<a class="close-reveal-modal">&#215;</a>';
-				} elseif ( file_exists( get_template_directory() . '/reveal.php' ) ) {
-					include get_template_directory() . '/reveal.php';
+				} elseif ( file_exists( $template . '/reveal.php' ) ) {
+					include $template . '/reveal.php';
 					//echo '<a class="close-reveal-modal">&#215;</a>';
 				} else {
 					include plugin_dir_path( __FILE__ ) . 'inc/template.php';
@@ -160,6 +168,14 @@ class Reveal_Modal_Plugin {
 	public function template() {
 		if ( ! is_404() && is_singular() ) {
 			global $wp_query;
+			
+			// Get correct path based in child theme or not
+			if ( is_child_theme() ) {
+				$template = get_stylesheet_directory();
+			} else {
+				$template = get_template_directory();
+			}
+
 			$_post = get_post( $wp_query->post->ID );
 			if ( isset( $_GET['reveal-modal-ajax'] ) && $_GET['reveal-modal-ajax'] == 'true' && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 				if ( $_post && strpos( $_post->post_name, $this->option_string ) !== false ) {
@@ -174,16 +190,16 @@ class Reveal_Modal_Plugin {
 					if ( ! empty( $prev_post ) ) {
 						echo '<a class="prev-post-reveal-nav" data-open-ajax="true" href="' . get_permalink( $prev_post->ID ) . '">&#60;</a>';
 					}
-					if ( file_exists( get_template_directory() . '/reveal-' . $_post_name . '.php' ) ) {
-						include get_template_directory() . '/reveal-' . $_post_name . '.php';
+					if ( file_exists( $template . '/reveal-' . $_post_name . '.php' ) ) {
+						include $template . '/reveal-' . $_post_name . '.php';
 						echo '<a class="close-reveal-modal">&#215;</a>';
 						die();
-					} elseif ( file_exists( get_template_directory() . '/reveal-' . $_post->post_name . '.php' ) ) {
-						include get_template_directory() . '/reveal-' . $_post->post_name . '.php';
+					} elseif ( file_exists( $template . '/reveal-' . $_post->post_name . '.php' ) ) {
+						include $template . '/reveal-' . $_post->post_name . '.php';
 						echo '<a class="close-reveal-modal">&#215;</a>';
 						die();
-					} elseif ( file_exists( get_template_directory() . '/reveal.php' ) ) {
-						include get_template_directory() . '/reveal.php';
+					} elseif ( file_exists( $template . '/reveal.php' ) ) {
+						include $template . '/reveal.php';
 						echo '<a class="close-reveal-modal">&#215;</a>';
 						die();
 					} else {
